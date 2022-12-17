@@ -1,12 +1,26 @@
-SELECT  employees.employee_id, 
-        employees.first_name, 
-        employees.last_name,
-        roles.title,
-        departments.department_name,
-        roles.salary,
-        CONCAT(managers.first_name, " ", managers.last_name) as manager_name
-FROM employees  
-LEFT JOIN roles ON employees.employee_id = roles.role_id
-LEFT JOIN departments ON departments.department_id = roles.department_id
-LEFT JOIN managers ON managers.department_id = departments.department_id;
+SELECT  a.employee_id,
+        a.manager_id,
+        a.first_name, 
+        a.last_name,
+        b.title,
+        c.department_name,
+        b.salary,
+        CASE WHEN a.manager_id IS NULL THEN NULL ELSE concat(d.first_name," ",d.last_name) END AS manager_name
+FROM employees a
+LEFT JOIN roles b ON a.employee_id = b.role_id
+LEFT JOIN departments c ON c.department_id = b.department_id
+
+/* subquery to derive unique department name and manager crosswalk */
+LEFT JOIN (
+        SELECT c.department_name, 
+               a.last_name,
+               a.first_name
+        FROM employees a
+        LEFT JOIN roles b ON a.employee_id = b.role_id
+        LEFT JOIN departments c ON c.department_id = b.department_id
+        WHERE manager_id IS NULL
+) d
+ON c.department_name = d.department_name;
+
+
 
