@@ -305,7 +305,7 @@ const addRole = () => {
         `INSERT INTO roles (title, salary, department_id) VALUES ('${answer.title}', ${answer.salary}, ${deptId})`,
         (error, response) => {
           if (error) throw error;
-          console.log(answer.title + ` is successfully created`);
+          console.log(`New Role is successfully created`);
         }
       );
       mainMenu();
@@ -336,9 +336,9 @@ const addDepartment = () => {
       let sql = `INSERT INTO departments (department_name) VALUES (?)`;
       connection.query(sql, answer.newDepartment, (error, response) => {
         if (error) throw error;
-        console.log(answer.newDepartment + ` is successfully added`);
-        viewAllDepartments();
+        console.log(`New department is successfully added`);
       });
+      mainMenu();
     });
 };
 
