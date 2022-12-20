@@ -212,6 +212,7 @@ const addEmployee = () => {
 };
 /* === || Update Employee Role || === */
 const updateRole = () => {
+  empChoices();
   inquirer
     .prompt([
       {
@@ -267,6 +268,7 @@ const viewAllRoles = () => {
   LEFT JOIN departments ON roles.department_id = departments.department_id;`;
   connection.query(sql, (error, response) => {
     if (error) throw error;
+    console.table(response);
     mainMenu();
   });
 };
